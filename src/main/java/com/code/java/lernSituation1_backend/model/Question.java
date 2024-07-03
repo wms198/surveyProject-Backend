@@ -31,6 +31,10 @@ public class Question {
         return questionContent;
     }
 
+    public void setQuestionContent(String questionContent) {
+        this.questionContent = questionContent;
+    }
+
     public Long getId() {
         return id;
     }
