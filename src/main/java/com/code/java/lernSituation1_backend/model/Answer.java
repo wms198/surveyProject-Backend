@@ -10,9 +10,6 @@ public class Answer {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "subject_nr", nullable = false)
-    private Integer subjectNr;
-
     @Column(name = "duration", nullable = false)
     private Long duration;
 
@@ -42,10 +39,6 @@ public class Answer {
 
     public Long getDuration() {
         return duration;
-    }
-
-    public Integer getSubjectNr() {
-        return subjectNr;
     }
 
     public Long getId() {
