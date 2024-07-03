@@ -1,5 +1,6 @@
 package com.code.java.lernSituation1_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Question {
     @Column(name = "question_content", nullable = false, length = 1000)
     private String questionContent;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Option> options = new ArrayList<>();
 
