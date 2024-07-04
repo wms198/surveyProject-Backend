@@ -11,6 +11,7 @@ import java.util.Optional;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1")
 public class QuestionController {
 
@@ -27,6 +28,7 @@ public class QuestionController {
      * @param question the question to create
      * @return the ResponseEntity with status 200 (OK) and with body of the new question
      */
+
     @PostMapping("/question")
     public ResponseEntity<Question> saveQuestion(@RequestBody Question question) {
         Question newQuestion = questionService.saveQuestion(question);

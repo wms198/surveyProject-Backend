@@ -13,6 +13,9 @@ public class Subject {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    @Column(name = "identifier", nullable = false, unique = true)
+    private String identifier;
+
     @OneToMany(mappedBy = "subject", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Answer> answers = new ArrayList<>();
 
@@ -32,4 +35,11 @@ public class Subject {
         this.id = id;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 }
