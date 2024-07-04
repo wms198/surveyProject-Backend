@@ -6,5 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AnswerRepository extends JpaRepository<Answer, Long> {
+public interface
+AnswerRepository extends JpaRepository<Answer, Long> {
+    //List<Answer> findBySubjectID(Long subject_id);
 }

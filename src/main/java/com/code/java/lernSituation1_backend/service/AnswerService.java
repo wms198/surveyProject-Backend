@@ -29,8 +29,9 @@ public class AnswerService {
     }
 
     //  Get Answers by subjectId. subject_id
-    public Optional<Answer> getAnswerById(Long subject_id) {
-        return answerRepository.findById(subject_id);
+    public Optional<Answer> getAnswerBySubjectId(Long subject_id) {
+        return null;
+        //return answerRepository.findBySubjectID(subject_id);
     }
 
 

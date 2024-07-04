@@ -1,5 +1,6 @@
 package com.code.java.lernSituation1_backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,13 +11,16 @@ public class Answer {
     @Column(name = "id", nullable = false)
     private Long id;
 
+
     @Column(name = "duration", nullable = false)
     private Long duration;
+
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "option_id", nullable = false)
     private Option option;
 
+    @JsonIgnore
     @ManyToOne(optional = false)
     @JoinColumn(name = "subject_id", nullable = false)
     private Subject subject;

@@ -1,6 +1,7 @@
 package com.code.java.lernSituation1_backend.api.controller;
 
 
+import com.code.java.lernSituation1_backend.Result;
 import com.code.java.lernSituation1_backend.model.Answer;
 import com.code.java.lernSituation1_backend.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,10 +32,30 @@ public class AnswerController {
     }
 
     //Get a answer by subject_id
-    @GetMapping("/answers/{id}")
-    public ResponseEntity<Answer> getAnswerById(@PathVariable Long subject_id) {
-        Optional<Answer> answer = answerService.getAnswerById(subject_id);
+    @GetMapping("/answers/{subject_id}")
+    public ResponseEntity<Answer> getAnswerBySubjectId(@PathVariable Long subject_id) {
+        Optional<Answer> answer = answerService.getAnswerBySubjectId(subject_id);
         return answer.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    // Get results
+    @GetMapping("/results")
+    public List<Answer> getResults() {
+        List<Answer> allAnswers =  answerService.getAllAnswers();
+        Long duration =0L;
+        int times =1;
+        Long percentCorrect;
+        Long adverageAnswerTime;
+        Long minimumAnswerTime =0L;
+        Long maximumAnswerTime ;
+        Long questionId;
+        ArrayList<Result> results = new ArrayList<>();
+        for (Answer answer : allAnswers) {
+            duration = answer.getDuration();
+            System.out.println(duration);
+
+        }
+        return null;
     }
 
 }
