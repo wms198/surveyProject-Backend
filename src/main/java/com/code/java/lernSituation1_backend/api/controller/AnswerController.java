@@ -42,18 +42,30 @@ public class AnswerController {
     @GetMapping("/results")
     public List<Answer> getResults() {
         List<Answer> allAnswers =  answerService.getAllAnswers();
-        Long duration =0L;
+        Long duration = 0L;
         int times =1;
-        Long percentCorrect;
+        boolean percentCorrect;
         Long adverageAnswerTime;
-        Long minimumAnswerTime =0L;
-        Long maximumAnswerTime ;
+        Long minimumAnswerTime = 0L;
+        Long maximumAnswerTime = 0L;
         Long questionId;
         ArrayList<Result> results = new ArrayList<>();
-        for (Answer answer : allAnswers) {
-            duration = answer.getDuration();
-            System.out.println(duration);
 
+        for (Answer answer : allAnswers) {
+            if(times == 1){
+                duration = answer.getDuration();
+                duration = minimumAnswerTime;
+                minimumAnswerTime =maximumAnswerTime;
+            }else if(times > 1){
+                duration = answer.getDuration();
+                if(duration > maximumAnswerTime)
+                    maximumAnswerTime = duration;
+                else if(duration  < minimumAnswerTime)
+                    minimumAnswerTime = duration;
+            }
+            times ++;
+            percentCorrect = answer.getOption().getIsCorrect();
+            questionId = answer.getOption().getQuestion().getId();
         }
         return null;
     }
