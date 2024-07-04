@@ -3,20 +3,20 @@ package com.code.java.lernSituation1_backend.api.controller;
 
 import com.code.java.lernSituation1_backend.Result;
 import com.code.java.lernSituation1_backend.model.Answer;
+import com.code.java.lernSituation1_backend.model.Option;
+import com.code.java.lernSituation1_backend.model.Question;
+import com.code.java.lernSituation1_backend.model.Subject;
+import com.code.java.lernSituation1_backend.request.AnswerRequest;
 import com.code.java.lernSituation1_backend.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/v1")
+@CrossOrigin
 public class AnswerController {
     private final AnswerService answerService;
 
@@ -32,42 +32,41 @@ public class AnswerController {
     }
 
     //Get a answer by subject_id
+    @GetMapping("/user/{subject_id}")
+    public ResponseEntity<Subject> getAnswerBySubjectId(@PathVariable String subject_id) {
+        Optional<Subject> sub = answerService.getSubjectByIdnetifier(subject_id);
+        return sub.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+    @PostMapping("/answer")
+    public ResponseEntity<Answer> saveAnswer(@RequestBody AnswerRequest answer) {
+        Answer newAnswer = answerService.saveAnswer(answer.getSubject_identifier(), answer.getOption_id(), answer.getDuration());
+        return ResponseEntity.ok().body(newAnswer);
+    }
+
+    //Get a answer by subject_id
     @GetMapping("/answers/{subject_id}")
-    public ResponseEntity<Answer> getAnswerBySubjectId(@PathVariable Long subject_id) {
+    public ResponseEntity<Answer> getSubjectByIdentifier(@PathVariable Long subject_id) {
         Optional<Answer> answer = answerService.getAnswerBySubjectId(subject_id);
         return answer.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
-
     // Get results
     @GetMapping("/results")
-    public List<Answer> getResults() {
+    public ResponseEntity<Collection<Result>> getResults() {
         List<Answer> allAnswers =  answerService.getAllAnswers();
-        Long duration = 0L;
-        int times =1;
-        boolean percentCorrect;
-        Long adverageAnswerTime;
-        Long minimumAnswerTime = 0L;
-        Long maximumAnswerTime = 0L;
-        Long questionId;
-        ArrayList<Result> results = new ArrayList<>();
-
+        Map<Question, Result> allResults = new HashMap<>();
         for (Answer answer : allAnswers) {
-            if(times == 1){
-                duration = answer.getDuration();
-                duration = minimumAnswerTime;
-                minimumAnswerTime =maximumAnswerTime;
-            }else if(times > 1){
-                duration = answer.getDuration();
-                if(duration > maximumAnswerTime)
-                    maximumAnswerTime = duration;
-                else if(duration  < minimumAnswerTime)
-                    minimumAnswerTime = duration;
+            Option option = answer.getOption();
+            Question question = option.getQuestion();
+            Result r;
+            if(allResults.containsKey(question))
+                r = allResults.get(question);
+            else{
+                r = new Result(question);
+                allResults.put(question, r);
             }
-            times ++;
-            percentCorrect = answer.getOption().getIsCorrect();
-            questionId = answer.getOption().getQuestion().getId();
+            r.addAnswer(answer, option.getIsCorrect());
         }
-        return null;
+        return ResponseEntity.ok().body(allResults.values());
     }
 
 }

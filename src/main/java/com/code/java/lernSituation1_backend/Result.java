@@ -1,62 +1,53 @@
 package com.code.java.lernSituation1_backend;
 
+import com.code.java.lernSituation1_backend.model.Answer;
+import com.code.java.lernSituation1_backend.model.Question;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Result {
-    private Long percentCorrect;
-    private Long adverageAnswerTime;
-    private Long minimumAnswerTime;
-    private Long maximumAnswerTime;
-    private Long questionId;
+    private int total = 0;
+    private int totalTime = 0;
+    private int correct = 0;
+    private int adverageAnswerTime = 0;
+    private int minimumAnswerTime = 9999999;
+    private int maximumAnswerTime = 0;
+    private Question question;
 
-    public Result(Long percentCorrect, Long adverageAnswerTime, Long minimumAnswerTime, Long maximumAnswerTime, Long questionId) {
-        this.percentCorrect = percentCorrect;
-        this.adverageAnswerTime = adverageAnswerTime;
-        this.minimumAnswerTime = minimumAnswerTime;
-        this.maximumAnswerTime = maximumAnswerTime;
-        this.questionId = questionId;
+    public Result(Question question){
+        this.question = question;
     }
 
-//region Getter & Setter
-
-    public Long getPercentCorrect() {
-        return percentCorrect;
+    public void addAnswer(Answer a, boolean isCorrect){
+        total++;
+        if(isCorrect)
+            correct++;
+        int duration = a.getDuration();
+        minimumAnswerTime = Math.min(duration, minimumAnswerTime);
+        maximumAnswerTime = Math.max(duration, maximumAnswerTime);
+        totalTime += duration;
+        adverageAnswerTime = totalTime / total;
+    }
+    public double getPercentage(){
+        return ((double)correct / (double)total) * 100.0;
     }
 
-    public void setPercentCorrect(Long percentCorrect) {
-        this.percentCorrect = percentCorrect;
-    }
-
-    public Long getAdverageAnswerTime() {
+    @JsonProperty("average")
+    public int getAdverageAnswerTime() {
         return adverageAnswerTime;
     }
 
-    public void setAdverageAnswerTime(Long adverageAnswerTime) {
-        this.adverageAnswerTime = adverageAnswerTime;
-    }
-
-    public Long getMinimumAnswerTime() {
+    @JsonProperty("minimum")
+    public int getMinimumAnswerTime() {
         return minimumAnswerTime;
     }
 
-    public void setMinimumAnswerTime(Long minimumAnswerTime) {
-        this.minimumAnswerTime = minimumAnswerTime;
-    }
-
-    public Long getMaximumAnswerTime() {
+    @JsonProperty("maximum")
+    public int getMaximumAnswerTime() {
         return maximumAnswerTime;
     }
 
-    public void setMaximumAnswerTime(Long maximumAnswerTime) {
-        this.maximumAnswerTime = maximumAnswerTime;
+    public Question getQuestion() {
+        return question;
     }
-
-    public Long getQuestionId() {
-        return questionId;
-    }
-
-    public void setQuestionId(Long questionId) {
-        this.questionId = questionId;
-    }
-
-    //endregion
 
 }

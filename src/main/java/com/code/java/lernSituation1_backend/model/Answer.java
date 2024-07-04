@@ -13,7 +13,7 @@ public class Answer {
 
 
     @Column(name = "duration", nullable = false)
-    private Long duration;
+    private int duration;
 
 
     @ManyToOne(optional = false)
@@ -41,8 +41,11 @@ public class Answer {
         this.option = option;
     }
 
-    public Long getDuration() {
+    public int getDuration() {
         return duration;
+    }
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
     public Long getId() {
