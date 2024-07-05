@@ -37,6 +37,7 @@ public class AnswerController {
         Optional<Subject> sub = answerService.getSubjectByIdnetifier(subject_id);
         return sub.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    // Create an answer from subject
     @PostMapping("/answer")
     public ResponseEntity<Answer> saveAnswer(@RequestBody AnswerRequest answer) {
         Answer newAnswer = answerService.saveAnswer(answer.getSubject_identifier(), answer.getOption_id(), answer.getDuration());
