@@ -54,20 +54,21 @@ public class AnswerController {
     @GetMapping("/results")
     public ResponseEntity<Collection<Result>> getResults() {
         List<Answer> allAnswers =  answerService.getAllAnswers();
-        Map<Question, Result> allResults = new HashMap<>();
+        Map<Long, Result> allResultsTree = new TreeMap<>();
         for (Answer answer : allAnswers) {
             Option option = answer.getOption();
             Question question = option.getQuestion();
+            Long qId = question.getId();
             Result r;
-            if(allResults.containsKey(question))
-                r = allResults.get(question);
+            if(allResultsTree.containsKey(qId))
+                r = allResultsTree.get(qId);
             else{
                 r = new Result(question);
-                allResults.put(question, r);
+                allResultsTree.put(qId, r);
             }
             r.addAnswer(answer, option.getIsCorrect());
         }
-        return ResponseEntity.ok().body(allResults.values());
+        return ResponseEntity.ok().body(allResultsTree.values());
     }
 
     //Insert option in OptionTable

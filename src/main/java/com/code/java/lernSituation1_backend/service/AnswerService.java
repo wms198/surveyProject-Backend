@@ -54,7 +54,7 @@ public class AnswerService {
 
     // Get all the answers
     public List<Answer> getAllAnswers() {
-        return answerRepository.findAll();
+        return answerRepository.findAllByOrderByOptionIdDesc();
     }
 
     //  Get Answers by subjectId. subject_id
