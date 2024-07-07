@@ -70,4 +70,20 @@ public class AnswerController {
         return ResponseEntity.ok().body(allResults.values());
     }
 
+    //Insert option in OptionTable
+    @PostMapping("/options")
+    public ResponseEntity<Option> saveOption(@RequestBody Option option) {
+        Option newOption = answerService.saveOption(option);
+        return ResponseEntity.ok().body(newOption);
+    }
+
+    //Delete option in optionTable
+    @DeleteMapping("/options/{id}")
+    public ResponseEntity<String> deleteOption(@PathVariable Long id) {
+        answerService.deleteOption(id);
+        return ResponseEntity.ok("Option deleted successfully.");
+    }
+
+
+
 }

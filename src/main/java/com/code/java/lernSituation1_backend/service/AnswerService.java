@@ -1,6 +1,7 @@
 package com.code.java.lernSituation1_backend.service;
 
 import com.code.java.lernSituation1_backend.model.Answer;
+import com.code.java.lernSituation1_backend.model.Option;
 import com.code.java.lernSituation1_backend.model.Subject;
 import com.code.java.lernSituation1_backend.model.repository.AnswerRepository;
 import com.code.java.lernSituation1_backend.model.repository.OptionRepository;
@@ -24,22 +25,24 @@ public class AnswerService {
         this.optionRepository = optionRepository;
         this.subjectRepository = subjectRepository;
     }
+
     public Optional<Subject> getSubjectByIdnetifier(String idnetifier){
         return subjectRepository.findByIdentifier(idnetifier);
     }
+
     public Answer saveAnswer(String subject_identifier, int option_id, int duration) {
         Answer answer = new Answer();
         answer.setDuration(duration);
         answer.setOption(optionRepository.findById((long)option_id).get());
 
         Optional<Subject> subject = subjectRepository.findByIdentifier(subject_identifier);
-        if(!subject.isPresent()){
+        if(subject.isPresent()){
+            answer.setSubject(subject.get());
+        }else{
             Subject newSubject = new Subject();
             newSubject.setIdentifier(subject_identifier);
             subjectRepository.save(newSubject);
             answer.setSubject(newSubject);
-        }else{
-            answer.setSubject(subject.get());
         }
 
         return saveAnswer(answer);
@@ -60,6 +63,13 @@ public class AnswerService {
         //return answerRepository.findBySubjectID(subject_id);
     }
 
+    // Insert option in optionTable
+    public Option saveOption(Option option) {
+        return (Option) optionRepository.save(option);
+    }
 
-
+    //Delete option in optionTable
+    public void deleteOption(Long option_id) {
+        optionRepository.deleteById(option_id);
+    }
 }

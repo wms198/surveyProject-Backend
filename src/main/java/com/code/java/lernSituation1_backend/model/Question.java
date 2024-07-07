@@ -44,4 +44,9 @@ public class Question {
         this.id = id;
     }
 
+    public Question(){}
+
+    public Question(int id){
+        this.id = (long)id;
+    }
 }

@@ -1,6 +1,7 @@
 package com.code.java.lernSituation1_backend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ public class Option {
     @Column(name = "is_correct", nullable = false)
     private Boolean isCorrect = false;
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne(optional = false)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
@@ -61,4 +62,11 @@ public class Option {
         this.id = id;
     }
 
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public void setCorrect(Boolean correct) {
+        isCorrect = correct;
+    }
 }

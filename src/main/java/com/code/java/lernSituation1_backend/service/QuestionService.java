@@ -1,5 +1,6 @@
 package com.code.java.lernSituation1_backend.service;
 
+import com.code.java.lernSituation1_backend.model.Option;
 import com.code.java.lernSituation1_backend.model.Question;
 import com.code.java.lernSituation1_backend.model.repository.QuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +59,16 @@ public class QuestionService {
         if(existingQuestion.isPresent()) {
             Question question = existingQuestion.get();
             question.setQuestionContent(updatedQuestion.getQuestionContent());
-            return (Question) questionRepository.save(question);
+
+            for (Option existingOption : question.getOptions()) {
+                for (Option updatedOption : updatedQuestion.getOptions()) {
+                    if (existingOption.getId().equals(updatedOption.getId())) {
+                        existingOption.setValue(updatedOption.getValue());
+                        existingOption.setCorrect(updatedOption.getIsCorrect());
+                    }
+                }
+            }
+            return questionRepository.save(question);
         }else{
             throw new RuntimeException("Question not found");
         }

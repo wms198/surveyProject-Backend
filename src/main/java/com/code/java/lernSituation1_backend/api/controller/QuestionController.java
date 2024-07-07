@@ -29,7 +29,7 @@ public class QuestionController {
      * @return the ResponseEntity with status 200 (OK) and with body of the new question
      */
 
-    @PostMapping("/question")
+    @PostMapping("/questions")
     public ResponseEntity<Question> saveQuestion(@RequestBody Question question) {
         Question newQuestion = questionService.saveQuestion(question);
         return ResponseEntity.ok().body(newQuestion);
@@ -71,12 +71,12 @@ public class QuestionController {
     }
 
     /*
-     * Delete a product by ID.
+     * Delete a question by ID.
      *
      * @param id the ID of the product to delete
      * @return the ResponseEntity with status 200 (OK) and with body of the message "Product deleted successfully"
      */
-    @DeleteMapping("/question/{id}")
+    @DeleteMapping("/questions/{id}")
     public ResponseEntity<String> deleteQuestion(@PathVariable Long id) {
         questionService.deleteQuestion(id);
         return ResponseEntity.ok("Question deleted successfully.");
