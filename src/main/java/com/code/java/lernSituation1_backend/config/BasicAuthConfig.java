@@ -26,10 +26,12 @@ public class BasicAuthConfig {
                 )
                 .formLogin((form) -> form
                         .loginPage("/login")
+                        .defaultSuccessUrl("/api/v1/results", true)
                         .permitAll()
                 )
-                .logout((logout) -> logout.permitAll());
+                .logout((logout) -> logout.permitAll())
 
+                .csrf((csrf) -> csrf.disable());
         return http.build();
     }
 
@@ -37,7 +39,7 @@ public class BasicAuthConfig {
     public UserDetailsService userDetailsService() {
         UserDetails user =
                 User.withDefaultPasswordEncoder()
-                        .username("user")
+                        .username("teacher")
                         .password("hunter7")
                         .roles("USER")
                         .build();
